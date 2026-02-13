@@ -11,7 +11,7 @@ Desarrollar un **MVP B2B SaaS** llamado **DATAMARK**, orientado a pequeños nego
 
 ---
 
-## 1. Diseño de Arquitectura
+##  1. Diseño de Arquitectura
 
 Se definió una arquitectura modular y escalable basada en:
 
@@ -25,7 +25,22 @@ Prisma ORM
 PostgreSQL (Docker)
 ```
 
-### Decisiones clave:
+###  Diagramas del Sistema
+
+Los diagramas oficiales del proyecto se encuentran en la carpeta `/docs`:
+
+```text
+/docs/architecture.mmd
+/docs/erd.mmd
+```
+
+Estos diagramas describen:
+
+- Arquitectura general del sistema
+- Relaciones entre entidades (Entity Relationship Diagram)
+- Modelo de datos del MVP
+
+### Decisiones clave
 
 - API REST stateless  
 - Arquitectura por capas (Routes → Controllers → ORM)  
@@ -39,7 +54,7 @@ PostgreSQL (Docker)
 
 Se construyó una API funcional con:
 
-### Gestión de Productos
+###  Gestión de Productos
 
 - CRUD completo  
 - Validaciones de datos  
@@ -80,7 +95,7 @@ Endpoint agregado que calcula:
 
 ---
 
-## 4. Infraestructura
+##  4. Infraestructura
 
 - PostgreSQL 15 dockerizado  
 - Variables de entorno separadas:
@@ -148,6 +163,7 @@ El proyecto ya cuenta con:
 - Arquitectura limpia y profesional  
 - Lógica de negocio realista  
 - Integridad transaccional  
+- Modelo de datos documentado (ERD)  
 - Base preparada para escalar  
 - Contrato API listo para integración  
 
@@ -162,4 +178,3 @@ Es una base sólida de:
 - Plataforma escalable  
 - Sistema listo para evolucionar a producción  
 - Proyecto con potencial comercial real  
-
