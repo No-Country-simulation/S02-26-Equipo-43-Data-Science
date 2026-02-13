@@ -1,0 +1,108 @@
+// ==============================
+// Prisma schema para DATAMARK (MVP)
+// Compatible con Prisma v7
+// ==============================
+
+// ------------------------------
+// GENERATOR
+// ------------------------------
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ------------------------------
+// DATASOURCE
+// En Prisma v7 la URL YA NO va aquí
+// (se toma desde prisma.config.ts)
+// ------------------------------
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// ==============================
+// MODELOS DEL NEGOCIO
+// ==============================
+
+model Store {
+  /// Tienda / negocio (multi-tenant)
+  id        String   @id @default(uuid())
+  name      String
+  city      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  products  Product[]
+  customers Customer[]
+  sales     Sale[]
+}
+
+model Product {
+  /// Producto de ropa o calzado
+  id        String   @id @default(uuid())
+  storeId   String
+  name      String
+  sku       String?  @unique
+  barcode   String?  @unique
+  category  String?
+  cost      Decimal
+  price     Decimal
+  stock     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  store     Store     @relation(fields: [storeId], references: [id])
+  items     SaleItem[]
+}
+
+model Customer {
+  /// Cliente (opcional en ventas rápidas)
+  id        String   @id @default(uuid())
+  storeId   String
+  fullName  String
+  phone     String?
+  email     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relaciones
+  store     Store @relation(fields: [storeId], references: [id])
+  sales     Sale[]
+}
+
+model Sale {
+  /// Venta (cabecera)
+  id         String    @id @default(uuid())
+  storeId    String
+  customerId String?
+  soldAt     DateTime  @default(now())
+  total      Decimal
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // Relaciones
+  store      Store      @relation(fields: [storeId], references: [id])
+  customer   Customer?  @relation(fields: [customerId], references: [id])
+  items      SaleItem[]
+}
+
+model SaleItem {
+  /// Detalle de venta
+  id        String   @id @default(uuid())
+  saleId    String
+  productId String
+  qty       Int
+  unitPrice Decimal
+  lineTotal Decimal
+
+  // Relaciones
+  sale      Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([saleId])
+  @@index([productId])
+}
