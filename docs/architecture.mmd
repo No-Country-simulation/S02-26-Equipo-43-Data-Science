@@ -1,3 +1,50 @@
-## Architecture Diagram
-
-See full diagram in `/docs/architecture.mmd`
+---
+config:
+  layout: elk
+  theme: neo-dark
+---
+flowchart TB
+ subgraph U["Users"]
+        O["Store Owner / Staff"]
+  end
+ subgraph FE["Frontend Web App"]
+        UI["UI Screens"]
+        CH["Client Validation"]
+  end
+ subgraph BE["Backend API - Express + TypeScript"]
+        R["Routes"]
+        C["Controllers"]
+        V["Validation Layer"]
+        E["Error Handling"]
+  end
+ subgraph DATA["Data Layer"]
+        P["Prisma ORM"]
+        DB[("PostgreSQL 15 - Docker")]
+  end
+ subgraph KPIS["Dashboard Aggregation"]
+        K["KPI Calculations"]
+  end
+ subgraph OPS["Infrastructure"]
+        ENV["Environment Variables"]
+        DC["Docker Compose"]
+        MIG["Prisma Migrations"]
+  end
+    O --> UI
+    UI --> CH
+    CH -- HTTP JSON --> R
+    R --> C & UI
+    C --> V
+    V -- Valid --> P
+    V -- Invalid --> E
+    P --> DB & C
+    DB --> P
+    C -- CRUD Products --> P
+    C -- Create Sale Transaction --> P
+    UI -- GET /dashboard/summary --> R
+    C -- Aggregate Sales Data --> K
+    K --> P
+    C -- JSON Response --> R
+    E -- JSON Error --> R
+    ENV -.-> BE
+    DC -.-> DB
+    MIG -.-> P
