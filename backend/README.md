@@ -1,6 +1,6 @@
-# DATAMARK – Documentación Técnica 
+# DATAMARK – Documentación Técnica (Backend)
 
-**Estado del proyecto:** MVP – Backend funcional 
+**Estado del proyecto:** MVP – Backend funcional ✅ | Integración con Frontend (en construcción) ⏳  
 **Tipo:** API REST (stateless)  
 **Formato de respuesta:** JSON  
 **Base URL (local):** `http://localhost:3000`
@@ -13,11 +13,11 @@
 
 Este backend implementa:
 
-- Gestión de productos e inventario
-- Registro de ventas con transacciones atómicas
-- Validación y descuento automático de stock
-- Cálculo de KPIs comerciales
-- Endpoints agregados para dashboard
+- Gestión de productos e inventario  
+- Registro de ventas con transacciones atómicas  
+- Validación y descuento automático de stock  
+- Cálculo de KPIs comerciales  
+- Endpoints agregados para dashboard  
 
 La arquitectura es modular y preparada para evolucionar a: **autenticación**, **multi-tenant**, **testing automatizado** y **CI/CD**.
 
@@ -25,24 +25,24 @@ La arquitectura es modular y preparada para evolucionar a: **autenticación**, *
 
 ## 2. Alcance del MVP
 
-###  Implementado
+### ✅ Implementado
 
-- CRUD de productos
-- Registro de ventas con integridad transaccional (atomicidad)
-- Validación de stock y decremento automático
-- Métricas agregadas para dashboard
-- PostgreSQL 15 dockerizado
-- Arquitectura por capas (Routes → Controllers → Data Layer/ORM)
-- Contrato API listo para frontend
+- CRUD de productos  
+- Registro de ventas con integridad transaccional (atomicidad)  
+- Validación de stock y decremento automático  
+- Métricas agregadas para dashboard  
+- PostgreSQL 15 dockerizado  
+- Arquitectura por capas (Routes → Controllers → Data Layer/ORM)  
+- Contrato API listo para frontend  
 
-###  Pendiente (roadmap)
+### ⏳ Pendiente (roadmap)
 
-- Integración con frontend
-- Autenticación + roles (JWT / RBAC)
-- Multi-tenant (aislamiento por tienda)
-- Pruebas (Jest / Cypress)
-- CI/CD (Jenkins)
-- Estrategia de despliegue productivo
+- Integración con frontend  
+- Autenticación + roles (JWT / RBAC)  
+- Multi-tenant (aislamiento por tienda)  
+- Pruebas (Jest / Cypress)  
+- CI/CD (Jenkins)  
+- Estrategia de despliegue productivo  
 
 ---
 
@@ -58,37 +58,38 @@ Controllers (lógica de negocio)
 Prisma ORM
         ↓
 PostgreSQL (Docker)
-
 ```
-
 
 ### Características clave
 
-- API REST **sin estado**
-- Procesamiento de ventas **transaction-safe**
-- Separación de responsabilidades (SoC)
-- Abstracción de base de datos mediante ORM (Prisma)
-- Infraestructura contenerizada (Docker)
-- Diseño preparado para escalar horizontalmente
+- API REST sin estado  
+- Procesamiento de ventas transaction-safe  
+- Separación de responsabilidades (SoC)  
+- Abstracción de base de datos mediante ORM (Prisma)  
+- Infraestructura contenerizada (Docker)  
+- Diseño preparado para escalar horizontalmente  
 
 ---
 
 ## 4. Stack tecnológico
 
 ### Backend
-- Node.js
-- TypeScript
-- Express.js
-- Prisma ORM
+
+- Node.js  
+- TypeScript  
+- Express.js  
+- Prisma ORM  
 
 ### Base de datos
-- PostgreSQL 15
-- Docker / Docker Compose
+
+- PostgreSQL 15  
+- Docker / Docker Compose  
 
 ### Desarrollo
-- ts-node-dev
-- npm
-- curl (pruebas manuales)
+
+- ts-node-dev  
+- npm  
+- curl (pruebas manuales)  
 
 ---
 
@@ -96,47 +97,49 @@ PostgreSQL (Docker)
 
 > Nota: Los nombres de entidades pueden variar según el schema real de Prisma; esta sección describe el modelo lógico.
 
-### Producto (`Product`)
-- `id` (UUID)
-- `name`
-- `category`
-- `cost`
-- `price`
-- `stock`
-- `isActive`
-- `createdAt`
-- `updatedAt`
+### Producto (Product)
 
-### Venta (`Sale`)
-- `id` (UUID)
-- `storeId` *(preparado para multi-tenant)*
-- `total`
-- `soldAt`
-- `createdAt`
-- `updatedAt`
+- id (UUID)  
+- name  
+- category  
+- cost  
+- price  
+- stock  
+- isActive  
+- createdAt  
+- updatedAt  
 
-### Detalle de venta (`SaleItem`)
-- `id` (UUID)
-- `saleId`
-- `productId`
-- `qty`
-- `unitPrice`
-- `lineTotal`
+### Venta (Sale)
+
+- id (UUID)  
+- storeId (preparado para multi-tenant)  
+- total  
+- soldAt  
+- createdAt  
+- updatedAt  
+
+### Detalle de venta (SaleItem)
+
+- id (UUID)  
+- saleId  
+- productId  
+- qty  
+- unitPrice  
+- lineTotal  
 
 ---
 
 ## 6. Reglas de negocio
 
-- Cada venta se procesa dentro de una **transacción**.
-- Se valida stock **antes** de confirmar la venta.
-- El stock se descuenta **automáticamente** cuando la venta se confirma.
-- Las métricas del dashboard se calculan desde ventas persistidas.
-- Utilidad bruta (gross profit) por línea:
+- Cada venta se procesa dentro de una transacción.  
+- Se valida stock antes de confirmar la venta.  
+- El stock se descuenta automáticamente cuando la venta se confirma.  
+- Las métricas del dashboard se calculan desde ventas persistidas.  
+
+### Utilidad bruta (gross profit) por línea:
 
 ```text
-
 (unitPrice - cost) × qty
-
 ```
 
 ---
@@ -144,66 +147,79 @@ PostgreSQL (Docker)
 ## 7. Convenciones de datos
 
 ### 7.1 Convención de campos
-- IDs: UUID
-- Claves JSON: `camelCase`
-- **Campo oficial en ventas:** `productId`
 
+- IDs: UUID  
+- Claves JSON: camelCase  
+- Campo oficial en ventas: productId  
 
 ### 7.2 Moneda y decimales
-- `cost` y `price` se manejan como número (recomendado: **2 decimales**).
-- Para producción se recomienda almacenar dinero como **enteros en centavos** o `Decimal` (según ORM/DB) para evitar errores de redondeo.
+
+- cost y price se manejan como número (recomendado: 2 decimales).  
+- Para producción se recomienda almacenar dinero como enteros en centavos o Decimal (según ORM/DB) para evitar errores de redondeo.  
 
 ### 7.3 Fechas
-- `soldAt`, `createdAt`, `updatedAt`: ISO-8601 (UTC recomendado)
+
+- soldAt, createdAt, updatedAt: ISO-8601 (UTC recomendado)  
 
 ---
 
 ## 8. Variables de entorno
 
-Crea un archivo `.env` (o usa variables del sistema). Ejemplo:
+> Se manejan variables en dos niveles:
+>
+> - Raíz del repo (Docker Compose)  
+> - Carpeta backend/ (Node/Prisma)  
 
+### 8.1 Variables para Docker Compose (raíz del repositorio)
 
-### Server
+Crear archivo local `./.env` basado en `./.env.example`:
 
-```bash
+```env
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=datamark
+POSTGRES_PORT=5432
+```
+
+`./.env.example` sí se sube a GitHub como plantilla.
+
+---
+
+### 8.2 Variables para el Backend (dentro de backend/)
+
+Crear archivo local `backend/.env` basado en `backend/.env.example`:
+
+```env
 PORT=3000
 NODE_ENV=development
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/datamark?schema=public"
 ```
 
-### Prisma / DB
+`backend/.env.example` sí se sube a GitHub como plantilla.
 
-```bash
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/datamark?schema=public"
-```
-- Si usas Docker Compose, DATABASE_URL debe apuntar al hostname del servicio (ej. db) según tu docker-compose.yml.
-
-------
+---
 
 ## 9. Especificación de API
 
 ### 9.1 Health Check
 
-GET /health
+#### `GET /health`
 
-Verifica disponibilidad del servicio.
-
-200 OK
-
-```bash
+```json
 {
   "status": "ok",
   "service": "datamark-backend",
   "timestamp": "2026-02-12T00:00:00.000Z"
 }
 ```
+
+---
+
 ### 9.2 Módulo Productos
 
-Listar productos activos
+#### `GET /products`
 
-GET /products
-
-200 OK
-```bash
+```json
 [
   {
     "id": "uuid",
@@ -217,13 +233,11 @@ GET /products
 ]
 ```
 
-Crear producto
+---
 
-POST /products
+#### `POST /products`
 
-Body
-
-```bash
+```json
 {
   "name": "Gorra Negra",
   "category": "Accesorios",
@@ -232,8 +246,10 @@ Body
   "stock": 12
 }
 ```
-- 201 Created (ejemplo)
-```
+
+**201 Created**
+
+```json
 {
   "id": "uuid",
   "name": "Gorra Negra",
@@ -246,27 +262,25 @@ Body
 }
 ```
 
-- 400 Bad Request (validación)
+**400 Bad Request**
 
-```
+```json
 { "message": "Datos inválidos: name es requerido" }
 ```
 
-Actualizar producto (parcial)
+---
 
-PUT /products/:id
+#### `PUT /products/:id`
 
-Body (ejemplo)
-
-```
+```json
 {
   "price": 50
 }
 ```
 
-- 200 OK
+**200 OK**
 
-```
+```json
 {
   "id": "uuid",
   "price": 50,
@@ -274,20 +288,19 @@ Body (ejemplo)
 }
 ```
 
-- 404 Not Found
+**404 Not Found**
 
-```
+```json
 { "message": "Producto no encontrado" }
 ```
 
+---
+
 ### 9.3 Módulo Ventas
 
-Crear venta
+#### `POST /sales`
 
-POST /sales
-
-Body
-```
+```json
 {
   "items": [
     { "productId": "UUID_DEL_PRODUCTO", "qty": 2 }
@@ -295,23 +308,9 @@ Body
 }
 ```
 
-**Comportamiento del sistema**
+**201 Created**
 
-- Valida disponibilidad de stock
-
-- Si el stock es insuficiente, rechaza la venta
-
-- Ejecuta operación como transacción atómica
-
-- Descuenta inventario automáticamente
-
-- Persiste Sale y SaleItems
-
-- Calcula total y utilidad bruta
-
-- 201 Created (ejemplo)
-
-```
+```json
 {
   "id": "uuid_sale",
   "total": 90,
@@ -326,9 +325,10 @@ Body
   ]
 }
 ```
-- 409 Conflict (stock insuficiente)
 
-```
+**409 Conflict**
+
+```json
 {
   "message": "Stock insuficiente para el producto",
   "productId": "UUID",
@@ -337,21 +337,19 @@ Body
 }
 ```
 
-- 404 Not Found (producto inexistente)
+**404 Not Found**
 
-```
+```json
 { "message": "Producto no encontrado" }
 ```
 
+---
+
 ### 9.4 Módulo Dashboard
 
-Resumen general
+#### `GET /dashboard/summary`
 
-GET /dashboard/summary
-
-200 OK (ejemplo)
-
-```
+```json
 {
   "totalSalesAmount": 12500,
   "totalSalesCount": 210,
@@ -368,151 +366,114 @@ GET /dashboard/summary
 }
 ```
 
-----
+---
 
 ## 10. Manejo de errores
 
-Formato estándar
+Formato estándar:
 
-```
+```json
 { "message": "Descripción del error" }
 ```
 
-**Errores comunes**
+Errores comunes:
 
-- Stock insuficiente
+- Stock insuficiente  
+- Producto no encontrado  
+- Error de conexión a base de datos  
+- Error interno del servidor  
 
-- Producto no encontrado
-
-- Error de conexión a base de datos
-
-- Error interno del servidor
-
-Recomendación: agregar code (ej. INSUFFICIENT_STOCK) en futuras iteraciones para facilitar manejo en frontend.
-
-
-----
+---
 
 ## 11. Instalación y ejecución (local)
 
-1) Instalar dependencias
+### 1️⃣ Levantar PostgreSQL (desde la raíz)
 
-```
-npm install
-```
-
-2) Levantar base de datos (Docker)
-
-```
+```bash
 docker compose up -d
 ```
 
-3) Migraciones
+---
 
-```
-npx prisma migrate dev
-```
+### 2️⃣ Configurar backend
 
-4) Generar Prisma Client
-
-```
+```bash
+cd backend
+npm install
 npx prisma generate
-```
-
-5) Iniciar servidor
-
-```
+npx prisma migrate dev
 npm run dev
 ```
 
------
+---
 
 ## 12. Pruebas manuales rápidas (curl)
 
-Health
+### Health
 
-```
+```bash
 curl -s http://localhost:3000/health
 ```
 
-Crear producto
+### Crear producto
 
-```
+```bash
 curl -s -X POST http://localhost:3000/products \
   -H "Content-Type: application/json" \
   -d '{"name":"Gorra Negra","category":"Accesorios","cost":18,"price":45,"stock":12}'
 ```
 
-Listar productos
+### Listar productos
 
-```
+```bash
 curl -s http://localhost:3000/products
 ```
 
+### Crear venta
 
-Crear venta
-
-```
+```bash
 curl -s -X POST http://localhost:3000/sales \
   -H "Content-Type: application/json" \
   -d '{"items":[{"productId":"UUID_DEL_PRODUCTO","qty":2}]}'
 ```
 
-Dashboard summary
+### Dashboard
 
-```
+```bash
 curl -s http://localhost:3000/dashboard/summary
 ```
-------
+
+---
 
 ## 13. Seguridad (estado actual)
 
-En el MVP actual:
+- Sin autenticación  
+- Sin control de roles  
+- Sin multi-tenant productivo  
+- Sin rate limiting  
+- Exposición local para desarrollo  
 
-- Sin autenticación
-
-- Sin control de roles
-
-- Sin multi-tenant productivo (store isolation)
-
-- Sin rate limiting
-
-- Exposición local para desarrollo
-
-Antes de producción: implementar JWT/RBAC, validación de payloads, rate limiting, logging estructurado y hardening de infraestructura.
-
-----------
+---
 
 ## 14. Próximas mejoras (roadmap)
 
-- Unit testing (Jest)
+- Unit testing (Jest)  
+- Integration testing  
+- E2E testing (Cypress)  
+- CI/CD (Jenkins)  
+- Autenticación (JWT)  
+- RBAC (roles/permisos)  
+- Multi-tenant real  
+- Logging estructurado + monitoreo  
 
-- Integration testing
-
-- E2E testing (Cypress)
-
-- CI/CD (Jenkins)
-
-- Autenticación (JWT)
-
-- RBAC (roles/permisos)
-
-- Multi-tenant real (aislamiento por tienda)
-
-- Logging estructurado + monitoreo (observabilidad)
-
----------
+---
 
 ## 15. Nivel de madurez
 
-Este backend es una base sólida de MVP, con:
+Backend MVP con:
 
-- Arquitectura modular y escalable
-
-- Operaciones transaccionales seguras
-
-- Modelo de datos preparado para expansión
-
-- Contrato API claro para frontend
-
-- Extensibilidad a features enterprise
+- Arquitectura modular y escalable  
+- Operaciones transaccionales seguras  
+- Modelo de datos preparado para expansión  
+- Contrato API claro para frontend  
+- Extensibilidad a features enterprise  
