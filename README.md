@@ -39,21 +39,21 @@ PostgreSQL (Docker)
 
 Se construyó una API funcional con:
 
-### ✅ Gestión de Productos
+### Gestión de Productos
 
 - CRUD completo  
 - Validaciones de datos  
 - Control de stock  
 - Soft delete (`isActive`)  
 
-### ✅ Registro de Ventas
+###  Registro de Ventas
 
 - Validación de disponibilidad de stock  
 - Descuento automático de inventario  
 - Persistencia de venta + detalle de venta  
 - Procesamiento transaccional (atomicidad)  
 
-### ✅ Dashboard Comercial
+###  Dashboard Comercial
 
 Endpoint agregado que calcula:
 
@@ -80,7 +80,7 @@ Endpoint agregado que calcula:
 
 ---
 
-## 🐘 4. Infraestructura
+## 4. Infraestructura
 
 - PostgreSQL 15 dockerizado  
 - Variables de entorno separadas:
