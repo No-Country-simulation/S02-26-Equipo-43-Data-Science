@@ -1,0 +1,54 @@
+---
+config:
+  theme: neo-dark
+---
+erDiagram
+
+  CUSTOMERS ||--o{ SALES : places
+  PRODUCTS  ||--o{ SALES : contains
+  PRODUCTS  ||--|| INVENTORY : has
+
+  CUSTOMERS {
+    int customer_id
+    string gender
+    int age
+    string province
+    string city
+  }
+
+  PRODUCTS {
+    int product_id
+    string sku
+    string name
+    string product_category
+    string brand
+    boolean promotion
+    boolean seasonal
+    string product_position
+    int sales_volume
+    string url
+  }
+
+  SALES {
+    int transaction_id
+    date sale_date
+    string sale_time
+    int customer_id
+    string gender
+    int age
+    string category
+    int quantity
+    float price_per_unit
+    float cogs
+    float total_sale
+    int product_id
+  }
+
+  INVENTORY {
+    int product_id
+    int stock_on_hand
+    int reorder_point
+    int safety_stock
+    date last_restock_date
+    string warehouse_location
+  }
