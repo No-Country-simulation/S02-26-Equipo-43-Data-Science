@@ -241,6 +241,9 @@ https://github.com/No-Country-simulation/S02-26-Equipo-43-Data-Science/blob/main
 | Frontend Developer | React + Dashboard |
 | Data Science | Modelo Predictivo (Iteración futura) |
 
+Desarrollado:
+
+[<img src="https://avatars.githubusercontent.com/u/160809137?s=400&u=53819c9e0bceb756b1c959b51623021829b0f8ae&v=4" width=115><br><sub>Angeles Morales</sub>](https://github.com/angelesGladin) 
 ---
 
 ## 📜 Licencia
